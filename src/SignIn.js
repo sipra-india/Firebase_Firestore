@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { doc, setDoc } from "firebase/firestore"; 
 
 function SignIn() {
   const [nm, SetNm] = useState("");
@@ -17,7 +18,14 @@ function SignIn() {
     SetPass(e.target.value);
   }
 
-  function Submit() {}
+  function Submit() {
+    await setDoc(doc(db, "users", nm), {
+  name: nm,
+  email: Em,
+  password: pass
+});
+
+  }
 
   return (
     <div>
