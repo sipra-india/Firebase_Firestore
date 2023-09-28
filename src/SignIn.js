@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { doc, setDoc } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "./firebase";
 
 function SignIn() {
   const [nm, SetNm] = useState("");
@@ -18,13 +19,17 @@ function SignIn() {
     SetPass(e.target.value);
   }
 
-  function Submit() {
-    await setDoc(doc(db, "users", nm), {
-  name: nm,
-  email: Em,
-  password: pass
-});
-
+  async function Submit() {
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        name: nm,
+        email: Em,
+        password: pass,
+      });
+      console.log("Document written with ID: ", docRef.name);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
 
   return (
